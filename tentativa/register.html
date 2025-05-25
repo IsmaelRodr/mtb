@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - My Task Box</title>
+    <style>
+        /* Cores do projeto */
+        :root {
+            --cor-primaria: #FF7F50; /* Laranja coral */
+            --cor-secundaria: #5F9EA0; /* Verde-água */
+            --cor-texto: #333333;
+            --cor-fundo: #FFFFFF;
+            --cor-erro: #FF3333;
+            --cor-sucesso: #33CC66;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; /* Tipografia sem serifa moderna */
+        }
+
+        body {
+            background-color: var(--cor-fundo);
+            color: var(--cor-texto);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            background-color: var(--cor-fundo);
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--cor-primaria);
+        }
+
+        .tagline {
+            color: var(--cor-secundaria);
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--cor-texto);
+            font-size: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--cor-texto);
+        }
+
+        input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--cor-secundaria);
+            box-shadow: 0 0 0 2px rgba(95, 158, 160, 0.2);
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 0.75rem;
+            background-color: var(--cor-primaria);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+
+        .btn:hover {
+            background-color: #FF6B3D;
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+        }
+
+        .login-link {
+            display: block;
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--cor-secundaria);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .login-link:hover {
+            color: #4A7F80;
+            text-decoration: underline;
+        }
+
+        .error-message {
+            color: var(--cor-erro);
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
+            display: none;
+        }
+
+        /* Responsividade */
+        @media (max-width: 480px) {
+            .container {
+                box-shadow: none;
+                padding: 1.5rem;
+            }
+
+            h1 {
+                font-size: 1.3rem;
+            }
+
+            .logo {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo-container">
+            <div class="logo">My Task Box</div>
+            <div class="tagline">Organize suas tarefas com simplicidade</div>
+        </div>
+
+        <h1>Criar uma conta</h1>
+
+        <form id="signup-form">
+            <div class="form-group">
+                <label for="name">Nome completo</label>
+                <input type="text" id="name" placeholder="Digite seu nome completo" required>
+                <div class="error-message" id="name-error">Por favor, digite seu nome completo.</div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" placeholder="seu@email.com" required>
+                <div class="error-message" id="email-error">Por favor, digite um e-mail válido.</div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Senha</label>
+                <input type="password" id="password" placeholder="Crie uma senha segura" required>
+                <div class="error-message" id="password-error">A senha deve ter pelo menos 6 caracteres.</div>
+            </div>
+
+            <div class="form-group">
+                <label for="confirm-password">Confirme a senha</label>
+                <input type="password" id="confirm-password" placeholder="Digite sua senha novamente" required>
+                <div class="error-message" id="confirm-password-error">As senhas não coincidem.</div>
+            </div>
+
+            <button type="submit" class="btn">Cadastrar</button>
+        </form>
+
+        <a href="#" class="login-link">Já tem uma conta? Faça login</a>
+    </div>
+
+    <script>
+        // Script para validação do formulário
+        const form = document.getElementById('signup-form');
+        const nameInput = document.getElementById('name');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirm-password');
+
+        // Funções de validação
+        function validateName() {
+            const nameError = document.getElementById('name-error');
+            if (nameInput.value.trim().length < 3) {
+                nameError.style.display = 'block';
+                return false;
+            } else {
+                nameError.style.display = 'none';
+                return true;
+            }
+        }
+
+        function validateEmail() {
+            const emailError = document.getElementById('email-error');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            if (!emailRegex.test(emailInput.value)) {
+                emailError.style.display = 'block';
+                return false;
+            } else {
+                emailError.style.display = 'none';
+                return true;
+            }
+        }
+
+        function validatePassword() {
+            const passwordError = document.getElementById('password-error');
+            
+            if (passwordInput.value.length < 6) {
+                passwordError.style.display = 'block';
+                return false;
+            } else {
+                passwordError.style.display = 'none';
+                return true;
+            }
+        }
+
+        function validateConfirmPassword() {
+            const confirmPasswordError = document.getElementById('confirm-password-error');
+            
+            if (confirmPasswordInput.value !== passwordInput.value) {
+                confirmPasswordError.style.display = 'block';
+                return false;
+            } else {
+                confirmPasswordError.style.display = 'none';
+                return true;
+            }
+        }
+
+        // Evento de envio do formulário
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const isNameValid = validateName();
+            const isEmailValid = validateEmail();
+            const isPasswordValid = validatePassword();
+            const isConfirmPasswordValid = validateConfirmPassword();
+            
+            if (isNameValid && isEmailValid && isPasswordValid && isConfirmPasswordValid) {
+                // Se tudo estiver válido, exibiria uma mensagem ou enviaria para um backend
+                alert('Cadastro realizado com sucesso!');
+                
+                // Em um caso real, enviaríamos os dados para o servidor aqui
+                // form.submit();
+            }
+        });
+
+        // Validar em tempo real durante a digitação
+        nameInput.addEventListener('blur', validateName);
+        emailInput.addEventListener('blur', validateEmail);
+        passwordInput.addEventListener('blur', validatePassword);
+        confirmPasswordInput.addEventListener('blur', validateConfirmPassword);
+    </script>
+</body>
+</html>
