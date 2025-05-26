@@ -10,10 +10,15 @@ body{
 body main{
     width: 100%;
     max-width: 420px;
-    padding: 2.5rem;
+    padding: 1.5rem;
     border-radius: 16px;
     box-shadow: var(--sombra-card);
     background-color: var(--cor-fundo);
+}
+
+#sec-1 h3{
+    text-align: center;
+    margin-bottom: 1rem;
 }
 
 #sec-1 .container-img{
@@ -33,7 +38,7 @@ body main{
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 }
 
 #sec-1 .container-text h2{
@@ -51,8 +56,34 @@ body main{
 }
 
 #sec-2 form .cadastro{
+    display: flex;
+    flex-direction: column;
     font-weight: 500;
     color: var(--cor-texto);
+    position: relative;
+}
+
+#sec-2 form .cadastro .icon1{
+    display: flex;
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+}
+
+#sec-2 form .cadastro .icon2{
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: flex;
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
 }
 
 #sec-2 form .cadastro input{
@@ -64,6 +95,20 @@ body main{
     font-size: 1rem;
     font-family: var(--fonte-principal);
     transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+#sec-2 form label input:focus{
+    outline: none;
+    border-color: var(--cor-secundaria);
+    box-shadow: 0 0 0 3px rgba(95, 158, 160, 0.15);
+}
+
+#sec-2 form .cadastro .nomeeEmail{
+    padding: 0.75rem 1rem 0.75rem 2.75rem;
+}
+
+#sec-2 form .cadastro .senha{
+    padding: 0.75rem 2.75rem 0.75rem 2.75rem;
 }
 
 #sec-2 form input[type="submit"]{
@@ -89,6 +134,9 @@ body main{
 }
 
 #sec-2 .container-text{
+    display: flex;
+    justify-self: center;
+    gap: 8px;
     margin-top: 1.5rem;
     color: var(--cor-primaria);
 }
@@ -102,21 +150,4 @@ body main{
 #sec-2 .container-text a:hover{
     color: #26267c;
     text-decoration: underline;
-}
-
-#sec-2 form label input:focus{
-    outline: none;
-    border-color: var(--cor-secundaria);
-    box-shadow: 0 0 0 3px rgba(95, 158, 160, 0.15);
-}
-
-#sec-2 form .cadastro{
-    display: flex;
-    flex-direction: column;
-}
-
-#sec-2 .container-text{
-    display: flex;
-    justify-self: center;
-    gap: 8px;
 }
