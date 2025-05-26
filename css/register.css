@@ -7,6 +7,15 @@ body{
     align-items: center;
 }
 
+body main{
+    width: 100%;
+    max-width: 420px;
+    padding: 2.5rem;
+    border-radius: 16px;
+    box-shadow: var(--sombra-card);
+    background-color: var(--cor-fundo);
+}
+
 #sec-1 .container-img{
     display: flex;
     align-items: center;
@@ -24,6 +33,7 @@ body{
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    margin-bottom: 2rem;
 }
 
 #sec-1 .container-text h2{
@@ -37,6 +47,67 @@ body{
 #sec-2 form{
     display: flex;
     flex-direction: column;
+    gap: 1rem;
+}
+
+#sec-2 form .cadastro{
+    font-weight: 500;
+    color: var(--cor-texto);
+}
+
+#sec-2 form .cadastro input{
+    width: 100%;
+    padding: 0.75rem 1rem;
+    margin-top: 0.5rem;
+    border: 1px solid var(--cor-input-borda);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: var(--fonte-principal);
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+#sec-2 form input[type="submit"]{
+    display: block;
+    width: 100%;
+    padding: 0.75rem;
+    background-color: var(--cor-primaria);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+#sec-2 form input[type="submit"]:hover{
+    background-color: #26267c;
+}
+
+#sec-2 form input[type="submit"]:active{
+    transform: translateY(1px);
+}
+
+#sec-2 .container-text{
+    margin-top: 1.5rem;
+    color: var(--cor-primaria);
+}
+
+#sec-2 .container-text a{
+    color: var(--cor-primaria);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+#sec-2 .container-text a:hover{
+    color: #26267c;
+    text-decoration: underline;
+}
+
+#sec-2 form label input:focus{
+    outline: none;
+    border-color: var(--cor-secundaria);
+    box-shadow: 0 0 0 3px rgba(95, 158, 160, 0.15);
 }
 
 #sec-2 form .cadastro{

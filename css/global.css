@@ -5,7 +5,14 @@
 }
 
 :root{
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 
-    --primary:#12123C;
+    --cor-primaria: #12123C; 
+    --cor-secundaria: #94E800; 
+    --cor-secundaria-suave: #b4ff33; 
+    --cor-fundo: #FFFFFF;
+    --cor-input-borda: #E0E0E0;
+    --cor-erro: #FF3333;
+    --fonte-principal: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --sombra-card: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
