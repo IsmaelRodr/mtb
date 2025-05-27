@@ -23,31 +23,37 @@ function fecharAoClicarFora(modalId) {
     });
 }
 
-// === Função para coletar dados do formulário ===
-function obterDadosFormulario() {
-    return {
-        titulo: document.getElementById('titulo').value.trim(),
-        data: document.getElementById('data').value,
-        hora: document.getElementById('hora').value,
-        prioridade: document.getElementById('prioridade').value,
-        categoria: document.getElementById('categoria').value,
-        descricao: document.getElementById('descricao').value.trim()
-    };
-}
-
 // === Função para enviar tarefa ao backend === POST tarefas
-async function enviarTarefa(dados) {
-    const resposta = await fetch('/api/tarefas', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(dados)
-    });
+async function enviarTarefa(dadosTarefa) {
+    try {
+        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MzVlYzgxMzY5MGM0YjUzNmY5ZTM1NyIsImVtYWlsIjoiaXNtYWVsQGdtYWlsLmNvbSIsImlhdCI6MTc0ODM3OTkwNSwiZXhwIjoxNzQ4MzgzNTA1fQ.0nD44TeC0fxlP6hVuUt9wfLX63ql0YJbXRNJ2I-EQgg";
 
-    if (!resposta.ok) {
-        throw new Error('Erro ao salvar tarefa no servidor.');
+        const response = await fetch("http://localhost:3000/tasks", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                authorization: token
+            },
+            body: JSON.stringify(dadosTarefa)
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error("Erro ao salvar tarefa:", response.status, errorText);
+            alert("Erro ao salvar tarefa. Verifique os dados e tente novamente.");
+            return;
+        }
+
+        const tarefaSalva = await response.json();
+        console.log("Tarefa salva com sucesso:", tarefaSalva);
+
+        fecharModalNovaTarefa("modalFormularioTarefa");
+        carregarTarefas(); // Atualiza a lista
+
+    } catch (error) {
+        console.error("Erro ao salvar tarefa:", error);
+        alert("Erro inesperado ao salvar tarefa.");
     }
-
-    return await resposta.json(); // tarefa salva com sucesso
 }
 
 // === Função para adicionar item visualmente na interface ===
@@ -133,15 +139,52 @@ function inicializarEventos() {
     fecharAoClicarFora('modalFormularioCategoria');
 }
 
-function obterDadosFormularioTarefa() {
+async function obterDadosFormularioTarefa() {
+    const title = document.getElementById('titulo').value.trim();
+    const description = document.getElementById('descricao').value.trim();
+    const dueDateInput = document.getElementById('dueDate').value;
+    const priority = document.getElementById('prioridade').value;
+    const status = document.getElementById('status').value;
+
+    const categoriaSelect = document.getElementById('categoria');
+    const categoryId = categoriaSelect.value;
+    const type = categoriaSelect.options[categoriaSelect.selectedIndex].text;
+
+    const dueDate = new Date(dueDateInput).toISOString();
+
     return {
-        titulo: document.getElementById('titulo').value.trim(),
-        data: document.getElementById('data').value,
-        hora: document.getElementById('hora').value,
-        prioridade: document.getElementById('prioridade').value,
-        categoria: document.getElementById('categoria').value,
-        descricao: document.getElementById('descricao').value.trim()
+        title,
+        description,
+        dueDate,
+        priority,
+        status,
+        type,
+        categoryId
     };
+}
+
+async function buscarCategoriaIdPorNome(name) {
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MzVlYzgxMzY5MGM0YjUzNmY5ZTM1NyIsImVtYWlsIjoiaXNtYWVsQGdtYWlsLmNvbSIsImlhdCI6MTc0ODM3OTkwNSwiZXhwIjoxNzQ4MzgzNTA1fQ.0nD44TeC0fxlP6hVuUt9wfLX63ql0YJbXRNJ2I-EQgg"; 
+    const resposta = await fetch('http://localhost:3000/categories', {
+        headers: {
+            'Authorization': token
+        }
+    });
+
+    if (!resposta.ok) {
+        console.error('Erro ao buscar categorias');
+        return null;
+    }
+
+    const categorias = await resposta.json();
+    const categoria = categorias.find(cat => cat.name === name); // ← aqui é name, como no backend
+
+    if (!categoria) {
+        console.error(`Categoria "${name}" não encontrada`);
+        return null;
+    }
+
+    return categoria._id;
 }
 
 function obterDadosFormularioCategoria() {
@@ -153,9 +196,13 @@ function obterDadosFormularioCategoria() {
 
 // POST categorias
 async function enviarCategoria(dados) {
-    const resposta = await fetch('/api/categorias', {
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MzVlYzgxMzY5MGM0YjUzNmY5ZTM1NyIsImVtYWlsIjoiaXNtYWVsQGdtYWlsLmNvbSIsImlhdCI6MTc0ODM3OTkwNSwiZXhwIjoxNzQ4MzgzNTA1fQ.0nD44TeC0fxlP6hVuUt9wfLX63ql0YJbXRNJ2I-EQgg";
+    const resposta = await fetch('http://localhost:3000/categories', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json',
+            'authorization': token
+        },
         body: JSON.stringify(dados)
     });
 
@@ -170,7 +217,13 @@ async function enviarCategoria(dados) {
 // GET categorias
 async function carregarCategorias() {
     try {
-        const resposta = await fetch('/api/categorias');
+        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MzVlYzgxMzY5MGM0YjUzNmY5ZTM1NyIsImVtYWlsIjoiaXNtYWVsQGdtYWlsLmNvbSIsImlhdCI6MTc0ODM3OTkwNSwiZXhwIjoxNzQ4MzgzNTA1fQ.0nD44TeC0fxlP6hVuUt9wfLX63ql0YJbXRNJ2I-EQgg";
+        const resposta = await fetch('http://localhost:3000/categories', {
+            headers: {
+                'authorization': token 
+            }
+        });
+
         if (!resposta.ok) throw new Error('Erro ao buscar categorias');
 
         const categorias = await resposta.json();
@@ -187,10 +240,23 @@ function popularSelectCategorias(categorias) {
 
     categorias.forEach(categoria => {
         const option = document.createElement('option');
-        option.value = categoria.id;
-        option.textContent = categoria.nome;
-        option.style.backgroundColor = categoria.cor; // opcional
+        option.value = categoria._id; // Corrigido
+        option.textContent = categoria.name; // Corrigido
+        option.style.backgroundColor = categoria.color; // Corrigido
         select.appendChild(option);
     });
 }
 
+document.getElementById('formularioTarefa').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    try {
+        const dadosTarefa = await obterDadosFormularioTarefa();
+        await enviarTarefa(dadosTarefa);
+        alert('Tarefa cadastrada com sucesso!');
+        // Aqui você pode fechar o modal ou atualizar a lista de tarefas
+    } catch (erro) {
+        console.error(erro);
+        alert('Erro ao cadastrar tarefa. Verifique os dados e tente novamente.');
+    }
+});

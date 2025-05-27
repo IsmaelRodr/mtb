@@ -57,40 +57,44 @@
 
                     <label for="titulo">
                         Título*
-                        <input type="text" id="titulo" class="form-input" required />
+                        <input type="text" id="titulo" class="form-input" name="title" placeholder="Insira o titulo da tarefa" required />
                     </label>
 
-                    <label for="data">
-                        Data*
-                        <input type="date" id="data" class="form-input" required />
+                    <label for="descricao">
+                        Descrição*
+                        <textarea style="resize: none;" id="descricao" class="form-input" name="description" maxlength="500" cols="3" rows="3" placeholder="Insira a descrição da tarefa"></textarea>
                     </label>
 
-                    <label for="hora">
-                        Hora*
-                        <input type="time" id="hora" class="form-input" required />
+                    <label for="dueDate">
+                        Data/hora de prazo*
+                        <input type="datetime-local" id="dueDate" class="form-input" name="dueDate" required />
                     </label>
 
                     <label for="prioridade">
-                        Prioridade
-                        <select id="prioridade" class="form-input">
-                        <option value="baixa">Baixa</option>
-                        <option value="media">Média</option>
-                        <option value="alta">Alta</option>
+                        Prioridade*
+                        <select id="prioridade" class="form-input" name="priority">
+                        <option id="baixa" value="baixa">Baixa</option>
+                        <option id="media" value="media">Média</option>
+                        <option id="alta" value="alta">Alta</option>
                         </select>
                     </label>
 
                     <label for="categoria">
-                        Categoria
-                        <select id="categoria" class="form-input">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
+                        Categoria*
+                        <select id="categoria" class="form-input" name="type">
+                            <option disabled selected>Selecione uma categoria</option>
                         </select>
                     </label>
 
-                    <label for="descricao">
-                        Descrição
-                        <textarea id="descricao" class="form-input" rows="3" placeholder="Descrição opcional"></textarea>
+                    <label for="status">
+                        Status*
+                        <select id="status" class="form-input" name="status">
+                        <option id="pending" value="pending">Pending</option>
+                        <option id="completed" value="completed">Completed</option>
+                        </select>
                     </label>
+
+                    <input type="hidden" id="categoryId" name="categoryId">
 
                     <div class="botoes-formulario">
                         <button type="submit" class="btn-salvar">Salvar</button>
